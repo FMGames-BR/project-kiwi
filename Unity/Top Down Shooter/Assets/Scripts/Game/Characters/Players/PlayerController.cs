@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     //private variables
     Rigidbody rb;
     Vector3 rawInput;
+    Vector2 aimingPosition;
 
     // Start is called before the first frame update
     void Awake()
@@ -21,7 +22,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        OnDoMove();
+        OnDoMove(); //move the player
+        OnDoAiming(); //aiming the target
     }
 
     protected virtual void OnDoMove()
@@ -36,5 +38,15 @@ public class PlayerController : MonoBehaviour
         Vector2 inputMovement = value.ReadValue<Vector2>();
 
         rawInput = new Vector3(inputMovement.x, 0, inputMovement.y);
+    }
+
+    public void OnAiming(InputAction.CallbackContext value)
+    {
+        aimingPosition = value.ReadValue<Vector2>();
+    }
+
+    protected virtual void OnDoAiming()
+    {
+        //Rotate player to look at the mouse
     }
 }

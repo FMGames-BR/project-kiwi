@@ -636,13 +636,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2512727746781738567, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
     - target: {fileID: 7067316644936625351, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7682880600382937245, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7682880600382937245, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_ActionId
+      value: 0ab5b05b-c27a-4a00-954a-b6a445e4b493
+      objectReference: {fileID: 0}
+    - target: {fileID: 7682880600382937245, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
+      propertyPath: m_ActionEvents.Array.data[1].m_ActionName
+      value: PlayerControls/Aiming[/Mouse/delta]
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
