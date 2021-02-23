@@ -57,8 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Game\Characters\ICharacter.cs" />
-    <Compile Include="Assets\Scripts\Game\Characters\Players\CharacterController.cs" />
+    <Compile Include="Assets\Scripts\Game\Characters\Players\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Game\SpawnerController.cs" />
+    <Compile Include="Assets\Scripts\Game\Characters\Enemies\EnemiesBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
