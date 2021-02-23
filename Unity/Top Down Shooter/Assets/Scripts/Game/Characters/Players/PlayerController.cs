@@ -8,15 +8,18 @@ public class PlayerController : MonoBehaviour
     public PlayerInput playerInput;
     public float movementSpeed = 1f;
 
-    //private variables
-    Rigidbody rb;
-    Vector3 rawInput;
-    Vector2 aimingPosition;
-
+    private Rigidbody rb;
+    private Vector3 rawInput;
+    private Vector2 aimingPosition;
+    private Camera _mainCamera;
+    private Plane _groundPlane;
+    
     // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        _mainCamera = Camera.main;
+        _groundPlane = new Plane(Vector3.up, Vector3.zero);
     }
 
     // Update is called once per frame
@@ -47,6 +50,12 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void OnDoAiming()
     {
-        //Rotate player to look at the mouse
+        var cameraRay = _mainCamera.ScreenPointToRay(aimingPosition);
+        if (!_groundPlane.Raycast(cameraRay, out var rayLength)) return;
+        var pointToLook = cameraRay.GetPoint(rayLength);
+        var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
+        targetRotation.x = 0;
+        targetRotation.z = 0;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f * Time.deltaTime);
     }
 }
