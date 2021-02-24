@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private Vector3 rawInput;
-    private Vector2 aimingPosition;
+    private Vector2 lookingPosition;
     private Camera _mainCamera;
     private Plane _groundPlane;
     
@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         OnDoMove(); //move the player
-        OnDoAiming(); //aiming the target
+        OnLookToTarget(); //aiming the target
     }
 
     protected virtual void OnDoMove()
@@ -38,24 +38,51 @@ public class PlayerController : MonoBehaviour
 
     public void OnMovement(InputAction.CallbackContext value)
     {
+
         Vector2 inputMovement = value.ReadValue<Vector2>();
+        Debug.Log(inputMovement);
 
         rawInput = new Vector3(inputMovement.x, 0, inputMovement.y);
     }
 
-    public void OnAiming(InputAction.CallbackContext value)
+    public void OnLooking(InputAction.CallbackContext value)
     {
-        aimingPosition = value.ReadValue<Vector2>();
+        lookingPosition = value.ReadValue<Vector2>();
     }
 
-    protected virtual void OnDoAiming()
+    protected virtual void OnLookToTarget()
     {
-        var cameraRay = _mainCamera.ScreenPointToRay(aimingPosition);
+        var cameraRay = _mainCamera.ScreenPointToRay(lookingPosition);
         if (!_groundPlane.Raycast(cameraRay, out var rayLength)) return;
         var pointToLook = cameraRay.GetPoint(rayLength);
         var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
         targetRotation.x = 0;
         targetRotation.z = 0;
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f * Time.deltaTime);
+    }
+
+    public void OnShot(InputAction.CallbackContext value)
+    {
+        bool isPressing = value.ReadValue<float>() > 0;
+
+        if(isPressing)
+        {
+            //Highlight direction
+            OnAiming();
+        }
+        else
+        {
+            OnDoShot();
+        }
+    }
+
+    protected virtual void OnAiming()
+    {
+
+    }
+
+    protected virtual void OnDoShot()
+    {
+
     }
 }

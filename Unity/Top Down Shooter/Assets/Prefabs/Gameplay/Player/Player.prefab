@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 7682880600382937245}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -221,7 +221,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8987489622270808531}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnAiming
+        m_MethodName: OnLooking
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -233,6 +233,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0ab5b05b-c27a-4a00-954a-b6a445e4b493
     m_ActionName: PlayerControls/Aiming[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8987489622270808531}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnShot
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0f6d0363-faf3-44a2-913b-f20e8d7a4b0e
+    m_ActionName: PlayerControls/Shoot[/Mouse/press]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls
