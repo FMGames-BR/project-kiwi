@@ -68,13 +68,14 @@
 │   │   │   ├── 📄 Level_1_1.scene 
 │   │   │   ├── 📄 Level_1_2.scene 
 │   │   │   └── 📄 Level_1_3.scene 
-│   │   └──	📁 World_2
+│   │   │   
+│   │   └── 📁 World_2
 │   │       ├── 📄 Level_2_1.scene 
 │   │       ├── 📄 Level_2_2.scene 
 │   │       └── 📄 Level_2_3.scene 
 │   │   
 │   └── 📁 Arena
-│       └──	📄 ArenaLevelName.scene 
+│       └── 📄 ArenaLevelName.scene 
 │      
 ├── 📁 Editor (scripts for unity editor, not the runtime )
 │
