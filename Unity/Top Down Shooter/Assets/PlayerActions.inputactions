@@ -89,10 +89,10 @@
                 {
                     "name": "",
                     "id": "75c3d5b3-4aae-4c9b-aef4-4f81b320008f",
-                    "path": "<Gamepad>/leftStick",
+                    "path": "<Joystick>/stick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard and Mouse;TouchScreen",
+                    "groups": "TouchScreen",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -136,11 +136,6 @@
                     "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
-                },
-                {
-                    "devicePath": "<Gamepad>",
-                    "isOptional": false,
-                    "isOR": false
                 }
             ]
         },
@@ -154,7 +149,7 @@
                     "isOR": false
                 },
                 {
-                    "devicePath": "<Gamepad>",
+                    "devicePath": "<Joystick>",
                     "isOptional": false,
                     "isOR": false
                 }
