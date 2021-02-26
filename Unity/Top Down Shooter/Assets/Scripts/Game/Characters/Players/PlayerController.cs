@@ -6,11 +6,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     public PlayerInput playerInput;
     public float movementSpeed = 1f;
 
     private Rigidbody rb;
-    private Vector3 rawInput;
+    [HideInInspector]
+    public Vector3 rawInput;
     private Vector2 lookingPosition;
     private Camera _mainCamera;
     private Plane _groundPlane;
@@ -18,6 +21,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        instance = this;
+
         rb = GetComponent<Rigidbody>();
         _mainCamera = Camera.main;
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -42,7 +47,6 @@ public class PlayerController : MonoBehaviour
     {
 
         Vector2 inputMovement = value.ReadValue<Vector2>();
-        Debug.Log(inputMovement);
 
         rawInput = new Vector3(inputMovement.x, 0, inputMovement.y);
     }

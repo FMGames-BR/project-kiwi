@@ -2,17 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemiesBase : MonoBehaviour
+public class EnemiesBase : MonoBehaviour, ICharacter
 {
-    // Start is called before the first frame update
-    void Start()
+    public Animator anim;
+
+    //Interface call
+    public void OnBorn()
     {
-        
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnDie()
     {
-        
+        throw new System.NotImplementedException();
+    }
+
+    public void OnHit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnWalk()
+    {
+        throw new System.NotImplementedException();
     }
 }
