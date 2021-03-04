@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -54,6 +53,7 @@ public class PlayerController : MonoBehaviour
     public void OnLooking(InputAction.CallbackContext value)
     {
         lookingPosition = value.ReadValue<Vector2>();
+        //Debug.Log(lookingPosition);
     }
 
     protected virtual void OnLookToTarget()
@@ -78,6 +78,8 @@ public class PlayerController : MonoBehaviour
             targetRotation.x = 0;
             targetRotation.z = 0;
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f * Time.deltaTime);
+
+            OnAiming();
         }
     }
 

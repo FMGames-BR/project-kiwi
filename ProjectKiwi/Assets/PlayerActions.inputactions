@@ -89,21 +89,10 @@
                 {
                     "name": "",
                     "id": "75c3d5b3-4aae-4c9b-aef4-4f81b320008f",
-                    "path": "<Joystick>/stick",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "TouchScreen",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "c80d0ecc-4867-4067-aa64-0fbb3648a561",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "TouchScreen;GamePad",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -125,7 +114,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "GamePad",
+                    "groups": "GamePad;TouchScreen",
                     "action": "Looking",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -183,6 +172,11 @@
                 },
                 {
                     "devicePath": "<Joystick>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Gamepad>",
                     "isOptional": false,
                     "isOR": false
                 }
