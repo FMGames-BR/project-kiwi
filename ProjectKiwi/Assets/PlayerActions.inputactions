@@ -99,6 +99,17 @@
                 },
                 {
                     "name": "",
+                    "id": "c80d0ecc-4867-4067-aa64-0fbb3648a561",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "af74da53-cee9-478c-9d19-8dfdf780d5bf",
                     "path": "<Mouse>/position",
                     "interactions": "",
@@ -110,11 +121,33 @@
                 },
                 {
                     "name": "",
+                    "id": "0d19641c-ea2a-42ca-8c83-1b9df93102b3",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Looking",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d0dfc79a-96d6-429c-ad2a-9946c7eb0168",
                     "path": "<Mouse>/press",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
+                    "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1d3c7363-cf92-4399-889a-169596d7deab",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
                     "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -136,11 +169,6 @@
                     "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
-                },
-                {
-                    "devicePath": "<Gamepad>",
-                    "isOptional": false,
-                    "isOR": false
                 }
             ]
         },
@@ -155,6 +183,17 @@
                 },
                 {
                     "devicePath": "<Joystick>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "GamePad",
+            "bindingGroup": "GamePad",
+            "devices": [
+                {
+                    "devicePath": "<Gamepad>",
                     "isOptional": false,
                     "isOR": false
                 }
