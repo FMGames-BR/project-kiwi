@@ -58,13 +58,27 @@ public class PlayerController : MonoBehaviour
 
     protected virtual void OnLookToTarget()
     {
-        var cameraRay = _mainCamera.ScreenPointToRay(lookingPosition);
-        if (!_groundPlane.Raycast(cameraRay, out var rayLength)) return;
-        var pointToLook = cameraRay.GetPoint(rayLength);
-        var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
-        targetRotation.x = 0;
-        targetRotation.z = 0;
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f * Time.deltaTime);
+        if(playerInput.currentControlScheme == "Keyboard and Mouse")
+        {
+            var cameraRay = _mainCamera.ScreenPointToRay(lookingPosition);
+            if (!_groundPlane.Raycast(cameraRay, out var rayLength)) return;
+            var pointToLook = cameraRay.GetPoint(rayLength);
+            var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
+            targetRotation.x = 0;
+            targetRotation.z = 0;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f * Time.deltaTime);
+        }
+        else //Touchpad or Gamepad
+        {
+            if (lookingPosition == Vector2.zero)
+                return;
+
+            Vector3 pointToLook = new Vector3(transform.position.x + lookingPosition.x, transform.position.y, transform.position.z + lookingPosition.y);
+            var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
+            targetRotation.x = 0;
+            targetRotation.z = 0;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f * Time.deltaTime);
+        }
     }
 
     public void OnShot(InputAction.CallbackContext value)
