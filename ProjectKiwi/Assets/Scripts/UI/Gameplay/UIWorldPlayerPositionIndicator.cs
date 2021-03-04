@@ -16,11 +16,15 @@ public class UIWorldPlayerPositionIndicator : MonoBehaviour
         newPos.y = player.y -0.9f;
         transform.position = Vector3.MoveTowards(transform.position, newPos, lerpSpeed * Time.deltaTime);
 
-        if (Mathf.Abs(transform.position.x - player.x) < 0.1f && Mathf.Abs(transform.position.z - player.z) < 0.1f)
+        if (System.Math.Round(Mathf.Abs(transform.position.x - player.x), 2) < 0.1f && System.Math.Round(Mathf.Abs(transform.position.z - player.z), 2) < 0.1f)
+        {
             if(visual.activeSelf)
                 visual.SetActive(false);
+        }
         else
+        {
             if(!visual.activeSelf)
                 visual.SetActive(true);
+        }
     }
 }
