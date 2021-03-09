@@ -3,6 +3,13 @@ using UnityEngine;
 
 namespace Gameplay.Weapons
 {
+
+    public enum SpreadType
+    {
+        Random,
+        Equally
+    }
+    
     public class GunBase : WeaponBase
     {
         private bool _isFiring;
@@ -12,8 +19,12 @@ namespace Gameplay.Weapons
         public float bulletSpeed;
         public Transform bulletSpawnPoint;
 
-        public float bulletsSpread = 30; //// 0 to 360 degrees to spread the bullets 
+        public float spreadHorizontal = 30; //// 0 to 360 degrees to spread the bullets 
+        public float spreadVertical = 0;
+        public SpreadType spreadType = SpreadType.Random;
 
+        public float bulletLifeRange = 5f;
+        
         // shotgun 
         public int numberOfBullets = 16;
 
@@ -39,25 +50,39 @@ namespace Gameplay.Weapons
 
                     // Shotgun - spreading bullets
 
-                    float totalSpread = bulletsSpread / numberOfBullets;
+                    var totalSpread = spreadHorizontal / numberOfBullets;
+                    var spreadHalf = spreadHorizontal / 2f;
                     for (var i = 0; i < numberOfBullets; i++)
                     {
-                        // spread equally
-                        var spreadA = totalSpread * (i + 1);
-                        var spreadB = bulletsSpread / 2f;
-                        var spread = spreadB - spreadA + (totalSpread / 2);
-                        var rotation = Quaternion.Euler(new Vector3(0,
-                             spread + bulletSpawnPoint.eulerAngles.y, 0));
-
-                        // spread randomly
-                        //var spreadA = bulletsSpread / 2;
-                        //var spread = Random.Range(spreadA*-1, spreadA);
-                        //var rotation = Quaternion.Euler(new Vector3(Random.Range(-2.5f, 2.5f),
-                        //    spread + bulletSpawnPoint.eulerAngles.y,0));
-                        //
+                        float spreadX = 0;
+                        float spreadY = 0;
+                        switch (spreadType)
+                        {
+                            case SpreadType.Equally:
+                                var spreadN = totalSpread * (i + 1);
+                                spreadY = spreadHalf - spreadN + (totalSpread / 2);
+                                if (i % 2 == 0)
+                                {
+                                    spreadX = spreadVertical;
+                                }
+                                else
+                                {
+                                    spreadX = spreadVertical * -1;
+                                }
+                                break;
+                            case SpreadType.Random:
+                                spreadY = Random.Range(spreadHalf*-1, spreadHalf);
+                                spreadX = Random.Range((spreadVertical * -1), (spreadVertical));
+                                break;
+                            default:
+                                break;
+                        }
+                        var rotation = Quaternion.Euler(new Vector3( spreadX,
+                            spreadY + bulletSpawnPoint.eulerAngles.y,0));
                         
                         var b = SpawnerController.instance.OnSpawnBullet(bulletSpawnPoint.position, rotation);
                         b.speed = bulletSpeed;
+                        b.lifeRange = bulletLifeRange;
 
                         // var b = Instantiate(bullet, bulletSpawnPoint.position, rotation);
                         // b.speed = bulletSpeed;
