@@ -148,6 +148,10 @@ public class PlayerController : MonoBehaviour
         // TODO: Show aiming trail 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="actionToPerform"></param>
     protected virtual void OnDoShot(PlayerActions actionToPerform)
     {
         if (actionToPerform == PlayerActions.None) //do nothing
