@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Gameplay.Bullets;
 using UnityEngine;
 
 public class SpawnerController : MonoBehaviour
@@ -21,66 +22,50 @@ public class SpawnerController : MonoBehaviour
         instance = this;
     }
 
-    public GameObject OnSpawnBullet()
+    public BulletBase OnSpawnBullet(Vector3 newPos, Quaternion newRotation)
     {
-        GameObject bullet = null;
+        BulletBase bulletBase = null;
 
-        if (_bulletsContainer == null)
-            _bulletsContainer = new GameObject("BulletsContainer");
-
+        // if (_bulletsContainer == null)
+        //     _bulletsContainer = new GameObject("BulletsContainer");
+        _bulletsContainer = _bulletsContainer ? _bulletsContainer : new GameObject("BulletsContainer");
+        
         //string poolKey = string.Format("bullet {0}", type.ToString());
-        string poolKey = string.Format("bullet");
+        var poolKey = string.Format("bullet");
         GameObject go = null;
         if (_poolList.ContainsKey(poolKey) && _poolList[poolKey].Count > 0)
             go = _poolList[poolKey].Dequeue();
 
-        if (go == null)
+        if (go)
         {
-            //switch (type)
-            //{
-            //    case Towers.A:
-            //        bullet = Instantiate(_towerA, _bulletsContainer.transform);
-            //        break;
-            //    case Towers.B:
-            //        bullet = Instantiate(_towerB, _bulletsContainer.transform);
-            //        break;
-            //    case Towers.C:
-            //        bullet = Instantiate(_towerC, _bulletsContainer.transform);
-            //        break;
-            //    case Towers.D:
-            //        bullet = Instantiate(_towerD, _bulletsContainer.transform);
-            //        break;
-            //}
-
-            bullet = Instantiate(_bullet, _bulletsContainer.transform);
+            bulletBase = go.GetComponent<BulletBase>();
+            var o = bulletBase.gameObject;
+            o.transform.position = newPos;
+            o.transform.rotation = newRotation;
         }
         else
-            bullet = go;
-
-        bullet.gameObject.SetActive(true);
-        //bullet.OnSpawn();
-
-        return bullet;
+        {
+            bulletBase = Instantiate(_bullet, newPos, newRotation).GetComponent<BulletBase>();
+            bulletBase.transform.SetParent(_bulletsContainer.transform);
+        }
+        bulletBase.gameObject.SetActive(true);
+        bulletBase.PoolOnInit();
+        return bulletBase;
     }
 
     #region POOLING
-
-    public void OnPoolingBullets(GameObject bullet)
+    public void OnPoolingBullets(GameObject go, BulletBase bulletBase)
     {
         //string poolKey = string.Format("bullet {0}", type.ToString());
-        string poolKey = string.Format("bullet");
-
+        var poolKey = string.Format("bullet");
         if (!_poolList.ContainsKey(poolKey))
         {
             Queue<GameObject> newQueue = new Queue<GameObject>();
             _poolList.Add(poolKey, newQueue);
         }
-
-        _poolList[poolKey].Enqueue(bullet);
-
-        bullet.SetActive(false);
-        //bullet.OnReset();
+        _poolList[poolKey].Enqueue(go);
+        bulletBase.PoolOnDestroy();
+        go.SetActive(false);
     }
-
     #endregion
 }
