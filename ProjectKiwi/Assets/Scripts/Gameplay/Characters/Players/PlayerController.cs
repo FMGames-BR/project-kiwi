@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerActions
+{
+    None,
+    SimpleWeapon,
+    Shotgun,
+    Grenade,
+    SpecialSkill
+}
+
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
@@ -10,10 +19,12 @@ public class PlayerController : MonoBehaviour
     public PlayerInput playerInput;
     public float movementSpeed = 1f;
 
-    private Rigidbody rb;
+    private PlayerActions _lastAction;
+
+    private Rigidbody _rb;
     [HideInInspector]
     public Vector3 rawInput;
-    private Vector2 lookingPosition;
+    private Vector2 _lookingPosition;
     private Camera _mainCamera;
     private Plane _groundPlane;
     
@@ -22,7 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         instance = this;
 
-        rb = GetComponent<Rigidbody>();
+        _rb = GetComponent<Rigidbody>();
         _mainCamera = Camera.main;
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -38,8 +49,8 @@ public class PlayerController : MonoBehaviour
     protected virtual void OnDoMove()
     {
         Vector3 playerVelocity = (rawInput * movementSpeed);
-        playerVelocity.y = rb.velocity.y;
-        rb.velocity = (playerVelocity);
+        playerVelocity.y = _rb.velocity.y;
+        _rb.velocity = (playerVelocity);
     }
 
     public void OnMovement(InputAction.CallbackContext value)
@@ -50,17 +61,28 @@ public class PlayerController : MonoBehaviour
         rawInput = new Vector3(inputMovement.x, 0, inputMovement.y);
     }
 
+    /// <summary>
+    /// For Mobile Device Only, when click UI buttons select the pressed weapon, OnButtonUp perform Shot
+    /// </summary>
+    /// <param name="action">The button clicked</param>
+    public void OnSelectAction(PlayerActions action)
+    {
+        if (action == PlayerActions.None)
+            OnDoShot(_lastAction);
+
+        _lastAction = action;
+    }
+
     public void OnLooking(InputAction.CallbackContext value)
     {
-        lookingPosition = value.ReadValue<Vector2>();
-        //Debug.Log(lookingPosition);
+        _lookingPosition = value.ReadValue<Vector2>();
     }
 
     protected virtual void OnLookToTarget()
     {
         if(playerInput.currentControlScheme == "Keyboard and Mouse")
         {
-            var cameraRay = _mainCamera.ScreenPointToRay(lookingPosition);
+            var cameraRay = _mainCamera.ScreenPointToRay(_lookingPosition);
             if (!_groundPlane.Raycast(cameraRay, out var rayLength)) return;
             var pointToLook = cameraRay.GetPoint(rayLength);
             var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
@@ -70,10 +92,10 @@ public class PlayerController : MonoBehaviour
         }
         else //Touchpad or Gamepad
         {
-            if (lookingPosition == Vector2.zero)
+            if (_lookingPosition == Vector2.zero)
                 return;
 
-            Vector3 pointToLook = new Vector3(transform.position.x + lookingPosition.x, transform.position.y, transform.position.z + lookingPosition.y);
+            Vector3 pointToLook = new Vector3(transform.position.x + _lookingPosition.x, transform.position.y, transform.position.z + _lookingPosition.y);
             var targetRotation = Quaternion.LookRotation(pointToLook - transform.position);
             targetRotation.x = 0;
             targetRotation.z = 0;
@@ -81,6 +103,29 @@ public class PlayerController : MonoBehaviour
 
             OnAiming();
         }
+    }
+
+    /// <summary>
+    /// For GamePad or Keyboard Only, next or previous weapon
+    /// </summary>
+    /// <param name="value">float value positive or negative</param>
+    public void OnChangeWeapon(InputAction.CallbackContext value)
+    {
+        if(value.phase == InputActionPhase.Started)
+        {
+            int currentSelected = (int)_lastAction;
+            currentSelected += (int)value.ReadValue<float>();
+
+            if (currentSelected < 1)
+                _lastAction = PlayerActions.SpecialSkill;
+            else if (currentSelected > 4)
+                _lastAction = PlayerActions.SimpleWeapon;
+            else
+                _lastAction = (PlayerActions)currentSelected;
+
+            Debug.Log("Select " + _lastAction.ToString());
+        }
+
     }
 
     public void OnShot(InputAction.CallbackContext value)
@@ -94,17 +139,21 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            OnDoShot();
+            OnDoShot(_lastAction);
         }
     }
 
     protected virtual void OnAiming()
     {
-
+        // TODO: Show aiming trail 
     }
 
-    protected virtual void OnDoShot()
+    protected virtual void OnDoShot(PlayerActions actionToPerform)
     {
+        if (actionToPerform == PlayerActions.None) //do nothing
+            return;
 
+        // TODO: Do Shot
+        Debug.Log("Perform Shot with " + actionToPerform.ToString());
     }
 }
