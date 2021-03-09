@@ -2412,9 +2412,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas Mobile
       objectReference: {fileID: 0}
-    - target: {fileID: 2854401807291935898, guid: b27b399efbb9e43459264669906082ff, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 7145098062141487405, guid: b27b399efbb9e43459264669906082ff, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b27b399efbb9e43459264669906082ff, type: 3}
@@ -2489,9 +2489,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2512727746781738567, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 7067316644936625351, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987489622270808531, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
+      propertyPath: _uiScheme
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8987489622270808531, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
+      propertyPath: _uiSticks
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f692fc3d3819fc7428ab3f5a7f6bb630, type: 3}
