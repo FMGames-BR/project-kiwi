@@ -12,7 +12,7 @@ public enum PlayerActions
     SpecialSkill
 }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : CharacterBase
 {
     public static PlayerController instance;
 
@@ -146,6 +146,7 @@ public class PlayerController : MonoBehaviour
     protected virtual void OnAiming()
     {
         // TODO: Show aiming trail 
+        //Debug.Log("aiming");
     }
 
     /// <summary>
