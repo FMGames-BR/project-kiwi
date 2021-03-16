@@ -14,9 +14,12 @@ public class UILifebar : MonoBehaviour
 
     CanvasGroup canvasGroup;
 
+    Transform cam;
+
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
+        cam = Camera.main.transform;
     }
 
     void Update()
@@ -24,11 +27,15 @@ public class UILifebar : MonoBehaviour
         if (!targetToFollow)
             return;
 
-        transform.LookAt(Camera.main.transform); // TODO: remove camera reference
         transform.position = targetToFollow.transform.position + positionOffset;
 
         if(Time.time >= timeToHide)
             canvasGroup.alpha = 0;
+    }
+
+    private void LateUpdate()
+    {
+        transform.LookAt(transform.position + cam.forward);
     }
 
     public void OnInit(Transform target)

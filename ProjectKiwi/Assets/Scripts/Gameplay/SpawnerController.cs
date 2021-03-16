@@ -60,11 +60,6 @@ public class SpawnerController : MonoBehaviour
         // if (_bulletsContainer == null)
         //     _bulletsContainer = new GameObject("BulletsContainer");
         _lifebarContainer = _lifebarContainer ? _lifebarContainer : new GameObject("UI Lifebar");
-        if (_lifebarContainer.transform.parent != UICanvasWorldFeedbacks.instance.transform)
-        {
-            _lifebarContainer.transform.SetParent(UICanvasWorldFeedbacks.instance.transform);
-            _lifebarContainer.transform.position = Vector3.zero;
-        }
 
         //string poolKey = string.Format("bullet {0}", type.ToString());
         var poolKey = string.Format("UILifebar");
