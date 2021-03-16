@@ -4,6 +4,7 @@ namespace Gameplay.Bullets
 {
     public class BulletBase : MonoBehaviour
     {
+        public int damage;
         public float speed;
         public float lifeRange = 3f; 
     
@@ -25,17 +26,18 @@ namespace Gameplay.Bullets
             if (Vector3.Distance(firedPosition, transform.position) > lifeRange) 
             {
                 SpawnerController.instance.OnPoolingBullets(gameObject, this);
-                // Destroy(gameObject);
             }
         }
 
-        // private void OnCollisionEnter(Collision other)
-        // {
-        //     if (other.gameObject.CompareTag("Enemy"))
-        //     {
-        //         other.gameObject.GetComponent<Health>().takeDamage(2);
-        //         Destroy(gameObject);
-        //     }
-        // }
+        private void OnTriggerEnter(Collider other)
+        {
+            ICharacter character = other.transform.GetComponent<ICharacter>();
+
+            if (character != null)
+            {
+                character.OnHit(damage);
+                SpawnerController.instance.OnPoolingBullets(gameObject, this);
+            }
+        }
     }
 }

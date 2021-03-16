@@ -13,7 +13,7 @@ public enum PlayerActions
 	SpecialSkill
 }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : CharacterBase
 {
 	public static PlayerController instance;
 

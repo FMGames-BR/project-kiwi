@@ -1,29 +1,48 @@
+using BehaviorDesigner.Runtime;
+using BehaviorDesigner.Runtime.Tasks.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemiesBase : MonoBehaviour, ICharacter
+public class EnemiesBase : CharacterBase
 {
     public Animator anim;
+    private BehaviorTree behaviorTree;
+    private UILifebar myLifebar;
 
-    //Interface call
-    public void OnBorn()
+    protected override void Awake()
     {
-        throw new System.NotImplementedException();
+        base.Awake();
+        behaviorTree = GetComponent<BehaviorTree>();
     }
 
-    public void OnDie()
+    public void OnAttack()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Enemy is attacking..");
     }
 
-    public void OnHit()
+    public override void OnBorn()
     {
-        throw new System.NotImplementedException();
+        base.OnBorn();
+
+        myLifebar = SpawnerController.instance.OnSpawnUILifebar(transform);
     }
 
-    public void OnWalk()
+    public override void OnHit(int damage)
     {
-        throw new System.NotImplementedException();
+        base.OnHit(damage);
+
+        myLifebar.OnUpdateValue((float)life / (float)initialLife);
+    }
+
+    public override void OnDie()
+    {
+        GameObject target = behaviorTree.FindTask<Seek>().target.Value;
+        Vector2 randomPos = Random.insideUnitCircle * 10f;
+        transform.position = target.transform.position + new Vector3(randomPos.x, 0, randomPos.y);
+
+        myLifebar.OnRemove();
+
+        OnBorn();
     }
 }
