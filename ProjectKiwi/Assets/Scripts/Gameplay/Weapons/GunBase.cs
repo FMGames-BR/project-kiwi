@@ -30,7 +30,7 @@ namespace Gameplay.Weapons
 
         private void Awake()
         {
-            _isFiring = true;
+            // _isFiring = true;
         }
 
 
