@@ -30,69 +30,67 @@ namespace Gameplay.Weapons
 
         private void Awake()
         {
-            // _isFiring = true;
+            SetWeaponAsReady();
         }
 
 
         private void Update()
         {
-            if (_isFiring)
-            {
-                _shotCounter -= Time.deltaTime;
-                if (_shotCounter <= 0)
-                {
-                    _shotCounter = timeBetweenShots;
+            if (_isFiring) {
+                _isFiring = false;
 
+                // simple pistol
+                // Bullet b = Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+                // b.speed = bulletSpeed;
 
-                    // simple pistol
-                    // Bullet b = Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-                    // b.speed = bulletSpeed;
+                // Shotgun - spreading bullets
 
-                    // Shotgun - spreading bullets
-
-                    var totalSpread = spreadHorizontal / numberOfBullets;
-                    var spreadHalf = spreadHorizontal / 2f;
-                    for (var i = 0; i < numberOfBullets; i++)
-                    {
-                        float spreadX = 0;
-                        float spreadY = 0;
-                        switch (spreadType)
-                        {
-                            case SpreadType.Equally:
-                                var spreadN = totalSpread * (i + 1);
-                                spreadY = spreadHalf - spreadN + (totalSpread / 2);
-                                if (i % 2 == 0)
-                                {
-                                    spreadX = spreadVertical;
-                                }
-                                else
-                                {
-                                    spreadX = spreadVertical * -1;
-                                }
-                                break;
-                            case SpreadType.Random:
-                                spreadY = Random.Range(spreadHalf*-1, spreadHalf);
-                                spreadX = Random.Range((spreadVertical * -1), (spreadVertical));
-                                break;
-                            default:
-                                break;
+                var totalSpread = spreadHorizontal/numberOfBullets;
+                var spreadHalf = spreadHorizontal/2f;
+                for (var i = 0; i < numberOfBullets; i++) {
+                    float spreadX = 0;
+                    float spreadY = 0;
+                    switch (spreadType) {
+                    case SpreadType.Equally:
+                        var spreadN = totalSpread*(i + 1);
+                        spreadY = spreadHalf - spreadN + (totalSpread/2);
+                        if (i%2 == 0) {
+                            spreadX = spreadVertical;
+                        } else {
+                            spreadX = spreadVertical*-1;
                         }
-                        var rotation = Quaternion.Euler(new Vector3( spreadX,
-                            spreadY + bulletSpawnPoint.eulerAngles.y,0));
-                        
-                        var b = SpawnerController.instance.OnSpawnBullet(bulletSpawnPoint.position, rotation);
-                        b.speed = bulletSpeed;
-                        b.lifeRange = bulletLifeRange;
-
-                        // var b = Instantiate(bullet, bulletSpawnPoint.position, rotation);
-                        // b.speed = bulletSpeed;
+                        break;
+                    case SpreadType.Random:
+                        spreadY = Random.Range(spreadHalf*-1, spreadHalf);
+                        spreadX = Random.Range((spreadVertical*-1), (spreadVertical));
+                        break;
+                    default:
+                        break;
                     }
+                    var rotation = Quaternion.Euler(new Vector3(spreadX,
+                        spreadY + bulletSpawnPoint.eulerAngles.y, 0));
+
+                    var b = SpawnerController.instance.OnSpawnBullet(bulletSpawnPoint.position, rotation);
+                    b.speed = bulletSpeed;
+                    b.lifeRange = bulletLifeRange;
+
+                    // var b = Instantiate(bullet, bulletSpawnPoint.position, rotation);
+                    // b.speed = bulletSpeed;
                 }
-            }
-            else
-            {
-                _shotCounter = timeBetweenShots;
+
             }
         }
+            
+        public override void OnAttack()
+        {
+            _isFiring = true;
+        }
+
+        public void SetWeaponAsReady()
+        {
+            _shotCounter = timeBetweenShots;
+            _isFiring = false;
+        }
     }
+
 }

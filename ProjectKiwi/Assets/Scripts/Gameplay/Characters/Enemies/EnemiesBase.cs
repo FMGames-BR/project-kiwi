@@ -18,7 +18,7 @@ public class EnemiesBase : CharacterBase
 
     public void OnAttack()
     {
-        Debug.Log("Enemy is attacking..");
+        // Debug.Log("Enemy is attacking..");
     }
 
     public override void OnBorn()

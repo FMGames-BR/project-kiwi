@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Gameplay.Weapons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
@@ -32,6 +33,8 @@ public class PlayerController : CharacterBase
 	[SerializeField] public LineRenderer attackLr;
 	[SerializeField] public float attackTrailDistance = 1;
 	[SerializeField] public Transform attackLookAtPoint;
+	[SerializeField] public GameObject primaryAttack;
+	private WeaponBase _primaryAttackWeapon;
 	private RaycastHit _attackHit;
 	private bool _mouseLeftButtonIsPressing = false;
 
@@ -46,6 +49,7 @@ public class PlayerController : CharacterBase
 		_mainCamera = Camera.main;
 		_groundPlane = new Plane(Vector3.up, Vector3.zero);
 		_mouseLeftButtonIsPressing = false;
+		_primaryAttackWeapon = primaryAttack.GetComponent<WeaponBase>();
 	}
 
 	// Update is called once per frame
@@ -178,6 +182,8 @@ public class PlayerController : CharacterBase
 	/// <param name="actionToPerform"></param>
 	protected virtual void OnDoShot (PlayerActions actionToPerform)
 	{
+		_primaryAttackWeapon.OnAttack();
+		
 		if (actionToPerform == PlayerActions.None) // do nothing
 			return;
 
