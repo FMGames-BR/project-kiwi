@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Gameplay.Weapons;
@@ -38,7 +39,14 @@ public class PlayerController : CharacterBase
 	private RaycastHit _attackHit;
 	private bool _mouseLeftButtonIsPressing = false;
 
+	private string attackType = "throw";
 
+	// throw attack --- start (i don't remember how to make region, but it's only temp)
+	private int numberThrowPoints = 10;
+	public Vector3[] throwPoints;
+	[SerializeField] public LineRenderer throwAttackLr;
+	private float throwPower = 2f;
+	// throw attack --- end
 
 	// Start is called before the first frame update
 	void Awake()
@@ -50,6 +58,13 @@ public class PlayerController : CharacterBase
 		_groundPlane = new Plane(Vector3.up, Vector3.zero);
 		_mouseLeftButtonIsPressing = false;
 		_primaryAttackWeapon = primaryAttack.GetComponent<WeaponBase>();
+	}
+
+	void Start()
+	{
+		throwAttackLr.positionCount = numberThrowPoints;
+		throwPoints = new Vector3[numberThrowPoints - 1];
+
 	}
 
 	// Update is called once per frame
@@ -107,8 +122,7 @@ public class PlayerController : CharacterBase
 			if (_mouseLeftButtonIsPressing) {
 				OnAiming();
 			}
-		} 
-		else //Touchpad or Gamepad
+		} else //Touchpad or Gamepad
 		{
 			if (_lookingPosition == Vector2.zero) {
 				attackLr.gameObject.SetActive(false);
@@ -161,18 +175,46 @@ public class PlayerController : CharacterBase
 
 	protected virtual void OnAiming()
 	{
-		attackLr.gameObject.SetActive(true);
 		var _t = transform;
-		//attackLookAtPoint.position
-		attackLr.SetPosition(0, _t.position);
-		if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance))
-		{
-			attackLr.SetPosition(1, _attackHit.point);
+		switch (attackType) {
+		case "shoot":
+			attackLr.gameObject.SetActive(true);
+			//attackLookAtPoint.position
+			attackLr.SetPosition(0, _t.position);
+			if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance)) {
+				attackLr.SetPosition(1, _attackHit.point);
+			} else {
+				attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
+			}
+			break;
+
+		case "throw":
+			throwAttackLr.SetPosition(0, attackLookAtPoint.position);
+			float throwHeight = 2.5f;
+			throwPower = 2f;
+			
+			for (var i = 1; i < numberThrowPoints; i++) {
+				var y = Mathf.Cos((throwPower)*(i*(1f/numberThrowPoints)))*(i*throwHeight);
+				throwAttackLr.SetPosition(i, new Vector3(
+					throwAttackLr.GetPosition(i - 1).x +_lookingPosition.x, 
+					y,
+					throwAttackLr.GetPosition(i - 1).z + (_lookingPosition.y)
+				));
+			}
+			throwAttackLr.SetPosition(0, new Vector3(
+				throwAttackLr.GetPosition(1).x -_lookingPosition.x, 
+				0,
+				throwAttackLr.GetPosition(1).z + (_lookingPosition.y)
+				));
+			break;
+
+		default:
+			break;
 		}
-		else
-		{
-			attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
+		if (attackType == "throw") {
+
 		}
+
 		// TODO: Show aiming trail 
 	}
 
@@ -183,7 +225,7 @@ public class PlayerController : CharacterBase
 	protected virtual void OnDoShot (PlayerActions actionToPerform)
 	{
 		_primaryAttackWeapon.OnAttack();
-		
+
 		if (actionToPerform == PlayerActions.None) // do nothing
 			return;
 
