@@ -42,11 +42,14 @@ public class PlayerController : CharacterBase
 	private string attackType = "throw";
 
 	// throw attack --- start (i don't remember how to make region, but it's only temp)
-	private int numberThrowPoints = 10;
-	public Vector3[] throwPoints;
+	//private int numberThrowPoints = 10;
+	//public Vector3[] throwPoints;
 	[SerializeField] public LineRenderer throwAttackLr;
-	private float throwPower = 2f;
+	//private float throwPower = 2f;
 	// throw attack --- end
+	public Vector2 throwForce;
+	public int throwPoints;
+	public float throwSpacingPoint;
 
 	// Start is called before the first frame update
 	void Awake()
@@ -62,8 +65,8 @@ public class PlayerController : CharacterBase
 
 	void Start()
 	{
-		throwAttackLr.positionCount = numberThrowPoints;
-		throwPoints = new Vector3[numberThrowPoints - 1];
+		//throwAttackLr.positionCount = numberThrowPoints;
+		//throwPoints = new Vector3[numberThrowPoints - 1];
 
 	}
 
@@ -177,42 +180,53 @@ public class PlayerController : CharacterBase
 	{
 		var _t = transform;
 		switch (attackType) {
-		case "shoot":
-			attackLr.gameObject.SetActive(true);
-			//attackLookAtPoint.position
-			attackLr.SetPosition(0, _t.position);
-			if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance)) {
-				attackLr.SetPosition(1, _attackHit.point);
-			} else {
-				attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
-			}
-			break;
+			case "shoot":
+				attackLr.gameObject.SetActive(true);
+				//attackLookAtPoint.position
+				attackLr.SetPosition(0, _t.position);
+				if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance)) {
+					attackLr.SetPosition(1, _attackHit.point);
+				} else {
+					attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
+				}
+				break;
+			case "throw":
+				if (throwPoints == 0)
+					return;
 
-		case "throw":
-			throwAttackLr.SetPosition(0, attackLookAtPoint.position);
-			float throwHeight = 2.5f;
-			throwPower = 2f;
-			
-			for (var i = 1; i < numberThrowPoints; i++) {
-				var y = Mathf.Cos((throwPower)*(i*(1f/numberThrowPoints)))*(i*throwHeight);
-				throwAttackLr.SetPosition(i, new Vector3(
-					throwAttackLr.GetPosition(i - 1).x +_lookingPosition.x, 
-					y,
-					throwAttackLr.GetPosition(i - 1).z + (_lookingPosition.y)
-				));
-			}
-			throwAttackLr.SetPosition(0, new Vector3(
-				throwAttackLr.GetPosition(1).x -_lookingPosition.x, 
-				0,
-				throwAttackLr.GetPosition(1).z + (_lookingPosition.y)
-				));
-			break;
+				Vector2 aimingDelta = Vector2.zero;
 
-		default:
-			break;
-		}
-		if (attackType == "throw") {
+				if (playerInput.currentControlScheme == "Keyboard and Mouse")
+				{
+					// Construct a ray from the current mouse coordinates
+					Ray ray = Camera.main.ScreenPointToRay(_lookingPosition);
+					RaycastHit hit;
+					if (Physics.Raycast(ray, out hit))
+					{
+						Vector2 clickDelta = (new Vector2(hit.point.x, hit.point.z) - new Vector2(transform.position.x, transform.position.z));
+						clickDelta.x = Mathf.Clamp(clickDelta.x, -throwForce.x, throwForce.x);
+						clickDelta.y = Mathf.Clamp(clickDelta.y, -throwForce.x, throwForce.x);
+						aimingDelta = clickDelta / throwForce.x;
+					}
+				}
+				else //GamePad or Touch
+				{
+					aimingDelta = _lookingPosition;
 
+				}
+
+				Vector3 _pointToLook = new Vector3(throwForce.x * aimingDelta.x, throwForce.y, throwForce.x * aimingDelta.y);
+				Vector3[] points = Trajectory.OnUpdateTrajectory(transform.position, _pointToLook, throwPoints, throwSpacingPoint);
+				throwAttackLr.positionCount = points.Length + 1;
+				throwAttackLr.SetPosition(0, _t.position);
+
+				for (int i = 0; i < points.Length; i++)
+				{
+					throwAttackLr.SetPosition(i + 1, points[i]);
+				}
+				break;
+			default:
+				break;
 		}
 
 		// TODO: Show aiming trail 
