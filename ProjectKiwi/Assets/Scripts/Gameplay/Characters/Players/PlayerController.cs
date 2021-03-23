@@ -92,11 +92,62 @@ public class PlayerController : CharacterBase
 		rawInput = new Vector3(inputMovement.x, 0, inputMovement.y);
 	}
 
-	/// <summary>
-	/// For Mobile Device Only, when click UI buttons select the pressed weapon, OnButtonUp perform Shot
-	/// </summary>
-	/// <param name="action">The button clicked</param>
-	public void OnSelectAction (PlayerActions action)
+	public void OnSelectAttack(InputAction.CallbackContext value)
+	{
+        #region Keyboard
+        if (playerInput.currentControlScheme == "Keyboard and Mouse")
+        {
+			//change selected attack variable = pressed number
+			char pressedNumber = value.control.name[0];
+			switch(pressedNumber)
+            {
+				case '1':
+
+					break;
+				case '2':
+
+					break;
+				case '3':
+
+					break;
+				case '4':
+
+					break;
+				case '5':
+
+					break;
+				case '6':
+
+					break;
+				case '7':
+
+					break;
+				case '8':
+
+					break;
+				case '9':
+
+					break;
+				case '0':
+
+					break;
+			}
+        }
+        #endregion
+
+        #region GamePad
+        else if (playerInput.currentControlScheme == "GamePad")
+        {
+			//change selected attack variable +1 or -1
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// For Mobile Device Only, when click UI buttons select the pressed weapon, OnButtonUp perform Shot
+    /// </summary>
+    /// <param name="action">The button clicked</param>
+    public void OnSelectAction (PlayerActions action)
 	{
 		if (action == PlayerActions.None)
 			OnDoShot(_lastAction);
