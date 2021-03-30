@@ -164,6 +164,7 @@ public class PlayerController : CharacterBase, IDamageable
 			OnDoShot(selectedWeapon);
 
 		selectedWeapon = action;
+		attackType = (selectedWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
 	}
 
 	public void OnLooking (InputAction.CallbackContext value)
@@ -279,7 +280,6 @@ public class PlayerController : CharacterBase, IDamageable
 				else //GamePad or Touch
 				{
 					aimingDelta = _lookingPosition;
-
 				}
 
 				if (!attackLr.enabled)
