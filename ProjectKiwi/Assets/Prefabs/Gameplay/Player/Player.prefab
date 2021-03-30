@@ -173,12 +173,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenShots: 0.3
   bulletBase: {fileID: 0}
-  bulletSpeed: 8
+  bulletSpeed: 12
   bulletSpawnPoint: {fileID: 2962503171676610665}
-  spreadHorizontal: 30
+  spreadHorizontal: 35
   spreadVertical: 1
   spreadType: 1
-  bulletLifeRange: 6
+  bulletLifeRange: 10
   numberOfBullets: 12
 --- !u!1 &3996960951102707442
 GameObject:
@@ -312,11 +312,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f7e50e1f140ba4faaa68c0723b33fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  life: 100
   playerInput: {fileID: 7682880600382937245}
   movementSpeed: 5
+  selectedWeapon: 0
+  attackType: 0
   rawInput: {x: 0, y: 0, z: 0}
   attackLr: {fileID: 577037213}
   attackTrailDistance: 10
+  attackLookAtPoint: {fileID: 4440187172291183652}
+  primaryAttack: {fileID: 1788699274651022051}
+  throwForce: {x: 5, y: 5}
+  throwPoints: 20
+  throwSpacingPoint: 0.1
 --- !u!136 &4281371775282982465
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -436,6 +444,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 4d331b31-94a7-4e3f-a83e-beed2373948c
     m_ActionName: PlayerControls/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8987489622270808531}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnSelectAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 18847973-f542-4549-b49f-5dbf098bcd71
+    m_ActionName: PlayerControls/SelectAttack[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls
@@ -543,11 +567,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.147
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.637
+      value: 0.903
       objectReference: {fileID: 0}
     - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
       propertyPath: m_LocalRotation.w
