@@ -4,15 +4,6 @@ using UnityEngine;
 
 namespace Assets.Scripts.Enums
 {
-	public enum PlayerWeapon
-	{
-		None, //for mobile only
-		PrimaryWeapon,
-		Shotgun,
-		Grenade,
-		SpecialSkill
-	}
-
 	public enum PlayerAttackType
 	{
 		Shoot,

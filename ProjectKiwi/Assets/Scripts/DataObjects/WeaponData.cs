@@ -1,3 +1,4 @@
+using Assets.Scripts.Enums;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Weapon Data", menuName = "ProjectKiwi/Weapons And Bullets/Weapons Data")]
 public class WeaponData : ScriptableObject
 {
+    [Tooltip("The type of the weapon")]
+    public Weapon type;
     [Tooltip("The maximum distance of the shot or throw")]
     public Vector2 shotForce;
     [Tooltip("The delay between shots")]

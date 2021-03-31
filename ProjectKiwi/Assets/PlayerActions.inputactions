@@ -30,15 +30,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "ChangeWeapon",
-                    "type": "Button",
-                    "id": "4d331b31-94a7-4e3f-a83e-beed2373948c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "SelectAttack",
+                    "name": "Change Weapon",
                     "type": "Button",
                     "id": "18847973-f542-4549-b49f-5dbf098bcd71",
                     "expectedControlType": "Button",
@@ -158,46 +150,13 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
-                    "id": "85cec78b-9d60-4f9c-bca1-ca0e22c6d015",
-                    "path": "1DAxis",
-                    "interactions": "Press",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChangeWeapon",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "4760f582-7951-40a3-bb05-c0041aba0024",
-                    "path": "<Gamepad>/leftShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChangeWeapon",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "88ef9878-cc57-499d-89ee-ac6498d16d65",
-                    "path": "<Gamepad>/rightShoulder",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "ChangeWeapon",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
                     "id": "f05be3ce-ee9e-4f1c-81e1-98f10c734f6a",
                     "path": "<Keyboard>/1",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -208,7 +167,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -219,7 +178,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -230,7 +189,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -241,7 +200,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -252,7 +211,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -263,7 +222,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -274,7 +233,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -285,7 +244,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -296,40 +255,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard and Mouse",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "DPad",
+                    "name": "L1 / R1",
                     "id": "5eed3b83-72ab-4985-99f8-161e79b17395",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "negative",
                     "id": "a6b0858e-8ed7-46e6-8d3d-ab7fe795fa71",
-                    "path": "<Gamepad>/dpad/left",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "GamePad",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "positive",
                     "id": "6ed8b372-c9a5-4865-99e1-4fd606155a94",
-                    "path": "<Gamepad>/dpad/right",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "GamePad",
-                    "action": "SelectAttack",
+                    "action": "Change Weapon",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

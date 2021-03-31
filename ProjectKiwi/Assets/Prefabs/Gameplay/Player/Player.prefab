@@ -157,6 +157,36 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2279783332268809113}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3987108286831973254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2811506526884156613}
+  m_Layer: 3
+  m_Name: WeaponSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2811506526884156613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3987108286831973254}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2279783332268809113}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3996960951102707442
@@ -274,8 +304,8 @@ Transform:
   - {fileID: 377354942798602256}
   - {fileID: 5472180783475092530}
   - {fileID: 577037212}
-  - {fileID: 2093037282136675847}
   - {fileID: 4440187172291183652}
+  - {fileID: 2811506526884156613}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -294,13 +324,13 @@ MonoBehaviour:
   life: 100
   playerInput: {fileID: 7682880600382937245}
   movementSpeed: 5
-  playerWeapon: 0
-  attackType: 0
+  currentWeaponType: 0
   rawInput: {x: 0, y: 0, z: 0}
   attackLr: {fileID: 577037213}
   attackTrailDistance: 10
   attackLookAtPoint: {fileID: 4440187172291183652}
-  selectedWeapon: {fileID: 58541034}
+  selectedWeapon: {fileID: 0}
+  weaponSpawnPoint: {fileID: 2811506526884156613}
   throwForce: {x: 5, y: 5}
   throwPoints: 20
   throwSpacingPoint: 0.1
@@ -421,22 +451,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 4d331b31-94a7-4e3f-a83e-beed2373948c
-    m_ActionName: PlayerControls/New action
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8987489622270808531}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnSelectAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_ActionId: 18847973-f542-4549-b49f-5dbf098bcd71
     m_ActionName: PlayerControls/SelectAttack[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5,/Keyboard/6,/Keyboard/7,/Keyboard/8,/Keyboard/9,/Keyboard/0]
   m_NeverAutoSwitchControlSchemes: 0
@@ -525,76 +539,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &1371875003258331482
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 2279783332268809113}
-    m_Modifications:
-    - target: {fileID: 854379424938841017, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_Name
-      value: SimpleShotgun
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.13
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.903
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
---- !u!4 &2093037282136675847 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-  m_PrefabInstance: {fileID: 1371875003258331482}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &58541034 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1371875003268473520, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-  m_PrefabInstance: {fileID: 1371875003258331482}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bface99eec434b668c4e330706176d65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -14,15 +14,6 @@ namespace Gameplay.Weapons
         }
 
 
-        protected override void Update()
-        {
-            if (_isFiring) {
-                _isFiring = false;
-
-                OnSpawnBullets();
-            }
-        }
-
         public override void OnAim(LineRenderer lineRenderer, Transform weaponPosition, Transform lookAtPoint)
         {
             if (!lineRenderer.enabled)

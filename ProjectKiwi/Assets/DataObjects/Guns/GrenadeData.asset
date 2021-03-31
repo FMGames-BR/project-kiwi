@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40bfb9ff5652cad4db63d1b7dc74fc8c, type: 3}
   m_Name: GrenadeData
   m_EditorClassIdentifier: 
+  type: 2
   shotForce: {x: 5, y: 5}
   delayBetweenShots: 5
-  numberOfBullets: 16
-  linePoints: 2
-  bulletSpeed: 0
+  numberOfBullets: 1
+  linePoints: 15
+  bulletSpeed: 10
   spreadHorizontal: 30
   spreadVertical: 0
-  spreadType: 0
+  spreadType: 1

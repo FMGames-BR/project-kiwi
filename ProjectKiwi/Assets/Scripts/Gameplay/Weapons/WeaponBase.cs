@@ -16,12 +16,22 @@ namespace Gameplay.Weapons
 
         protected virtual void Update()
         {
+            if (_isFiring)
+            {
+                _isFiring = false;
 
+                OnSpawnBullets();
+            }
         }
 
         public virtual void OnAttack()
         {
             _isFiring = true;
+        }
+
+        public virtual void OnCalculateAim(Vector3 lookingDelta)
+        {
+            //do nothing, used for throwing
         }
 
         public virtual void OnAim(LineRenderer lineRenderer, Transform weaponPosition, Transform lookAtPoint)

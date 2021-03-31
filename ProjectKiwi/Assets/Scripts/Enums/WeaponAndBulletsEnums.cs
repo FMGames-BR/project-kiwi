@@ -7,5 +7,13 @@ namespace Assets.Scripts.Enums
         Random,
         Equally
     }
+
+    public enum Weapon
+    {
+        None,
+        Shotgun,
+        Grenade,
+        Bazooka
+    }
     #endregion
 }

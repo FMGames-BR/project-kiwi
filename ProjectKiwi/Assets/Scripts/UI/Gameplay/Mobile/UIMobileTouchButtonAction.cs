@@ -7,6 +7,6 @@ public class UIMobileTouchButtonAction : MonoBehaviour
 {
     public void OnSelectAction(int action)
     {
-        PlayerController.instance.OnSelectAction((PlayerWeapon)action);
+        PlayerController.instance.OnSelectAction((Weapon)action);
     }
 }

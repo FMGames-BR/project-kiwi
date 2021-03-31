@@ -16,8 +16,7 @@ public class PlayerController : CharacterBase, IDamageable
 	public PlayerInput playerInput;
 	public float movementSpeed = 1f;
 
-	public PlayerWeapon playerWeapon;
-	public PlayerAttackType attackType = PlayerAttackType.Shoot;
+	public Weapon currentWeaponType;
 
 	private Rigidbody _rb;
 	[HideInInspector]
@@ -32,8 +31,9 @@ public class PlayerController : CharacterBase, IDamageable
 	[SerializeField] public Transform attackLookAtPoint;
 	private RaycastHit _attackHit;
 
-	[SerializeField] public GunBase selectedWeapon;
-	private WeaponBase _primaryAttackWeapon;
+	public WeaponBase selectedWeapon;
+	public Transform weaponSpawnPoint;
+	//private WeaponBase _primaryAttackWeapon;
 	private bool _mouseLeftButtonIsPressing = false;
 
 	//[SerializeField] public LineRenderer throwAttackLr;
@@ -52,19 +52,32 @@ public class PlayerController : CharacterBase, IDamageable
         _mainCamera = Camera.main;
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
         _mouseLeftButtonIsPressing = false;
-        _primaryAttackWeapon = selectedWeapon.GetComponent<WeaponBase>();
+        //_primaryAttackWeapon = selectedWeapon.GetComponent<WeaponBase>();
 
 #if UNITY_STANDALONE || UNITY_EDITOR
-		playerWeapon = PlayerWeapon.PrimaryWeapon;
-		attackType = PlayerAttackType.Shoot;
+		currentWeaponType = Weapon.Shotgun;
 #endif
 	}
 
-	// Update is called once per frame
-	void Update()
+    private void Start()
+    {
+		OnSpawnWeapon(currentWeaponType);
+	}
+
+    // Update is called once per frame
+    void Update()
 	{
 		OnDoMove();       //move the player
 		OnLookToTarget(); //aiming the target
+	}
+
+	private void OnSpawnWeapon(Weapon weaponType)
+    {
+		if (selectedWeapon != null)
+			SpawnerController.instance.OnPoolingWeapons(selectedWeapon);
+
+		selectedWeapon = SpawnerController.instance.OnSpawnWeapon(weaponType, weaponSpawnPoint);
+
 	}
 
 	protected virtual void OnDoMove()
@@ -82,75 +95,17 @@ public class PlayerController : CharacterBase, IDamageable
 		rawInput = new Vector3(inputMovement.x, 0, inputMovement.y);
 	}
 
-	public void OnSelectAttack(InputAction.CallbackContext value)
-	{
-        #region Keyboard
-        if (playerInput.currentControlScheme == "Keyboard and Mouse")
-        {
-			//change selected attack variable = pressed number
-			char pressedNumber = value.control.name[0];
-			switch(pressedNumber)
-            {
-				case '1':
-					playerWeapon = PlayerWeapon.PrimaryWeapon;
-					attackType = PlayerAttackType.Shoot;
-					break;
-				case '2':
-					playerWeapon = PlayerWeapon.Shotgun;
-					attackType = PlayerAttackType.Shoot;
-					break;
-				case '3':
-					playerWeapon = PlayerWeapon.Grenade;
-					attackType = PlayerAttackType.Throw;
-					break;
-				case '4':
-					playerWeapon = PlayerWeapon.SpecialSkill;
-					attackType = PlayerAttackType.Shoot;
-					break;
-				case '5':
-
-					break;
-				case '6':
-
-					break;
-				case '7':
-
-					break;
-				case '8':
-
-					break;
-				case '9':
-
-					break;
-				case '0':
-
-					break;
-			}
-        }
-        #endregion
-
-        #region GamePad
-        else if (playerInput.currentControlScheme == "GamePad")
-        {
-			//change selected attack variable +1 or -1
-			//Used to select traps
-        }
-		#endregion
-
-		Debug.Log("Select " + playerWeapon.ToString());
-	}
-
     /// <summary>
     /// For Mobile Device Only, when click UI buttons select the pressed weapon, OnButtonUp perform Shot
     /// </summary>
     /// <param name="action">The button clicked</param>
-    public void OnSelectAction (PlayerWeapon action)
+    public void OnSelectAction (Weapon action)
 	{
-		if (action == PlayerWeapon.None)
-			OnDoShot(playerWeapon);
+		if (action == Weapon.None)
+			OnDoShot(currentWeaponType);
 
-		playerWeapon = action;
-		attackType = (playerWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
+		currentWeaponType = action;
+		OnSpawnWeapon(action);
 	}
 
 	public void OnLooking (InputAction.CallbackContext value)
@@ -185,6 +140,7 @@ public class PlayerController : CharacterBase, IDamageable
 				targetRotation.z = 0;
 				attackLookAtPoint.rotation = Quaternion.LookRotation((_pointToLook - attackLookAtPoint.transform.position).normalized);
 				transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 8f*Time.deltaTime);
+
 				OnAiming();
 			}
 		}
@@ -196,22 +152,68 @@ public class PlayerController : CharacterBase, IDamageable
 	/// <param name="value">float value positive or negative</param>
 	public void OnChangeWeapon (InputAction.CallbackContext value)
 	{
-		if (value.phase == InputActionPhase.Started) {
-			int currentSelected = (int)playerWeapon;
+		//Debug.Log(value.action.phase);
+		if (value.action.phase != InputActionPhase.Started) //canceled means end of button pressed
+			return;
+		#region Keyboard
+		if (playerInput.currentControlScheme == "Keyboard and Mouse")
+		{
+			//change selected attack variable = pressed number
+			char pressedNumber = value.control.name[0];
+			switch (pressedNumber)
+			{
+				case '1':
+					currentWeaponType = Weapon.Shotgun;
+					break;
+				case '2':
+					currentWeaponType = Weapon.Shotgun;
+					break;
+				case '3':
+					currentWeaponType = Weapon.Grenade;
+					break;
+				case '4':
+					currentWeaponType = Weapon.Bazooka;
+					break;
+				case '5':
+
+					break;
+				case '6':
+
+					break;
+				case '7':
+
+					break;
+				case '8':
+
+					break;
+				case '9':
+
+					break;
+				case '0':
+
+					break;
+			}
+		}
+		#endregion
+
+		#region GamePad
+		else if (playerInput.currentControlScheme == "GamePad")
+		{
+			int currentSelected = (int)currentWeaponType;
 			currentSelected += (int)value.ReadValue<float>();
 
 			if (currentSelected < 1)
-				playerWeapon = PlayerWeapon.SpecialSkill;
-			else if (currentSelected > 4)
-				playerWeapon = PlayerWeapon.PrimaryWeapon;
+				currentWeaponType = Weapon.Bazooka;
+			else if (currentSelected > 3)
+				currentWeaponType = Weapon.Shotgun;
 			else
-				playerWeapon = (PlayerWeapon)currentSelected;
+				currentWeaponType = (Weapon)currentSelected;
 
-			attackType = (playerWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
-
-			Debug.Log("Select " + playerWeapon.ToString());
+			Debug.Log("Select " + currentWeaponType.ToString());
 		}
+		#endregion
 
+		OnSpawnWeapon(currentWeaponType);
 	}
 
 	public void OnShot (InputAction.CallbackContext value)
@@ -222,83 +224,27 @@ public class PlayerController : CharacterBase, IDamageable
 			OnAiming();
 			_mouseLeftButtonIsPressing = true;
 		} else {
-			OnDoShot(playerWeapon);
+			OnDoShot(currentWeaponType);
 			_mouseLeftButtonIsPressing = false;
 		}
 	}
 
 	protected virtual void OnAiming()
 	{
-		Transform _t = transform;
-		switch (attackType) {
-			case PlayerAttackType.Shoot:
-				//if (!attackLr.enabled)
-				//	attackLr.enabled = true;
-				//attackLr.gameObject.SetActive(true);
-				////attackLookAtPoint.position
-				//attackLr.positionCount = 2;
-				//attackLr.SetPosition(0, _t.position);
-				//if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance)) {
-				//	attackLr.SetPosition(1, _attackHit.point);
-				//} else {
-				//	attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
-				//}
-
-				selectedWeapon.OnAim(attackLr, transform, attackLookAtPoint);
-				break;
-			case PlayerAttackType.Throw:
-				if (throwPoints == 0)
-					return;
-
-				Vector2 aimingDelta = Vector2.zero;
-
-				if (playerInput.currentControlScheme == "Keyboard and Mouse")
-				{
-					// Construct a ray from the current mouse coordinates
-					Ray ray = Camera.main.ScreenPointToRay(_lookingPosition);
-					RaycastHit hit;
-					if (Physics.Raycast(ray, out hit))
-					{
-						Vector2 clickDelta = (new Vector2(hit.point.x, hit.point.z) - new Vector2(transform.position.x, transform.position.z));
-						clickDelta.x = Mathf.Clamp(clickDelta.x, -throwForce.x, throwForce.x);
-						clickDelta.y = Mathf.Clamp(clickDelta.y, -throwForce.x, throwForce.x);
-						aimingDelta = clickDelta / throwForce.x;
-					}
-				}
-				else //GamePad or Touch
-				{
-					aimingDelta = _lookingPosition;
-				}
-
-				if (!attackLr.enabled)
-					attackLr.enabled = true;
-				Vector3 _pointToLook = new Vector3(throwForce.x * aimingDelta.x, throwForce.y, throwForce.x * aimingDelta.y);
-				Vector3[] points = Trajectory.OnUpdateTrajectory(transform.position, _pointToLook, throwPoints, throwSpacingPoint);
-				attackLr.positionCount = points.Length + 1;
-				attackLr.SetPosition(0, _t.position);
-
-				for (int i = 0; i < points.Length; i++)
-				{
-					attackLr.SetPosition(i + 1, points[i]);
-				}
-				break;
-			default:
-				break;
-		}
-
-		// TODO: Show aiming trail 
+		selectedWeapon.OnCalculateAim(_lookingPosition);
+		selectedWeapon.OnAim(attackLr, transform, attackLookAtPoint);
 	}
 
 	/// <summary>
 	/// 
 	/// </summary>
 	/// <param name="actionToPerform"></param>
-	protected virtual void OnDoShot (PlayerWeapon actionToPerform)
+	protected virtual void OnDoShot (Weapon actionToPerform)
 	{
-		if (actionToPerform == PlayerWeapon.None) // do nothing
+		if (actionToPerform == Weapon.None) // do nothing
 			return;
 
-		_primaryAttackWeapon.OnAttack();
+		selectedWeapon.OnAttack();
 		//reset line renderer
 		attackLr.enabled = false;
 		Debug.Log("reset LR");
