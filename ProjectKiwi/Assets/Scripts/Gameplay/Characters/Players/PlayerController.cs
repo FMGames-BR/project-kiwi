@@ -7,21 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 using BehaviorDesigner.Runtime.Tactical;
-
-public enum PlayerWeapon
-{
-	None, //for mobile only
-	PrimaryWeapon,
-	Shotgun,
-	Grenade,
-	SpecialSkill
-}
-
-public enum PlayerAttackType
-{
-	Shoot,
-	Throw
-}
+using Assets.Scripts.Enums;
 
 public class PlayerController : CharacterBase, IDamageable
 {
@@ -30,7 +16,7 @@ public class PlayerController : CharacterBase, IDamageable
 	public PlayerInput playerInput;
 	public float movementSpeed = 1f;
 
-	public PlayerWeapon selectedWeapon;
+	public PlayerWeapon playerWeapon;
 	public PlayerAttackType attackType = PlayerAttackType.Shoot;
 
 	private Rigidbody _rb;
@@ -44,11 +30,11 @@ public class PlayerController : CharacterBase, IDamageable
 	[Header("Temp Shoot variables")]
 	[SerializeField] public float attackTrailDistance = 1;
 	[SerializeField] public Transform attackLookAtPoint;
-	[SerializeField] public GameObject primaryAttack;
-	private WeaponBase _primaryAttackWeapon;
 	private RaycastHit _attackHit;
-	private bool _mouseLeftButtonIsPressing = false;
 
+	[SerializeField] public GunBase selectedWeapon;
+	private WeaponBase _primaryAttackWeapon;
+	private bool _mouseLeftButtonIsPressing = false;
 
 	//[SerializeField] public LineRenderer throwAttackLr;
 	[Header("Temp Throw variables")]
@@ -66,10 +52,10 @@ public class PlayerController : CharacterBase, IDamageable
         _mainCamera = Camera.main;
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
         _mouseLeftButtonIsPressing = false;
-        _primaryAttackWeapon = primaryAttack.GetComponent<WeaponBase>();
+        _primaryAttackWeapon = selectedWeapon.GetComponent<WeaponBase>();
 
 #if UNITY_STANDALONE || UNITY_EDITOR
-		selectedWeapon = PlayerWeapon.PrimaryWeapon;
+		playerWeapon = PlayerWeapon.PrimaryWeapon;
 		attackType = PlayerAttackType.Shoot;
 #endif
 	}
@@ -106,19 +92,19 @@ public class PlayerController : CharacterBase, IDamageable
 			switch(pressedNumber)
             {
 				case '1':
-					selectedWeapon = PlayerWeapon.PrimaryWeapon;
+					playerWeapon = PlayerWeapon.PrimaryWeapon;
 					attackType = PlayerAttackType.Shoot;
 					break;
 				case '2':
-					selectedWeapon = PlayerWeapon.Shotgun;
+					playerWeapon = PlayerWeapon.Shotgun;
 					attackType = PlayerAttackType.Shoot;
 					break;
 				case '3':
-					selectedWeapon = PlayerWeapon.Grenade;
+					playerWeapon = PlayerWeapon.Grenade;
 					attackType = PlayerAttackType.Throw;
 					break;
 				case '4':
-					selectedWeapon = PlayerWeapon.SpecialSkill;
+					playerWeapon = PlayerWeapon.SpecialSkill;
 					attackType = PlayerAttackType.Shoot;
 					break;
 				case '5':
@@ -151,7 +137,7 @@ public class PlayerController : CharacterBase, IDamageable
         }
 		#endregion
 
-		Debug.Log("Select " + selectedWeapon.ToString());
+		Debug.Log("Select " + playerWeapon.ToString());
 	}
 
     /// <summary>
@@ -161,10 +147,10 @@ public class PlayerController : CharacterBase, IDamageable
     public void OnSelectAction (PlayerWeapon action)
 	{
 		if (action == PlayerWeapon.None)
-			OnDoShot(selectedWeapon);
+			OnDoShot(playerWeapon);
 
-		selectedWeapon = action;
-		attackType = (selectedWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
+		playerWeapon = action;
+		attackType = (playerWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
 	}
 
 	public void OnLooking (InputAction.CallbackContext value)
@@ -211,19 +197,19 @@ public class PlayerController : CharacterBase, IDamageable
 	public void OnChangeWeapon (InputAction.CallbackContext value)
 	{
 		if (value.phase == InputActionPhase.Started) {
-			int currentSelected = (int)selectedWeapon;
+			int currentSelected = (int)playerWeapon;
 			currentSelected += (int)value.ReadValue<float>();
 
 			if (currentSelected < 1)
-				selectedWeapon = PlayerWeapon.SpecialSkill;
+				playerWeapon = PlayerWeapon.SpecialSkill;
 			else if (currentSelected > 4)
-				selectedWeapon = PlayerWeapon.PrimaryWeapon;
+				playerWeapon = PlayerWeapon.PrimaryWeapon;
 			else
-				selectedWeapon = (PlayerWeapon)currentSelected;
+				playerWeapon = (PlayerWeapon)currentSelected;
 
-			attackType = (selectedWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
+			attackType = (playerWeapon == PlayerWeapon.Grenade) ? PlayerAttackType.Throw : PlayerAttackType.Shoot;
 
-			Debug.Log("Select " + selectedWeapon.ToString());
+			Debug.Log("Select " + playerWeapon.ToString());
 		}
 
 	}
@@ -236,27 +222,29 @@ public class PlayerController : CharacterBase, IDamageable
 			OnAiming();
 			_mouseLeftButtonIsPressing = true;
 		} else {
-			OnDoShot(selectedWeapon);
+			OnDoShot(playerWeapon);
 			_mouseLeftButtonIsPressing = false;
 		}
 	}
 
 	protected virtual void OnAiming()
 	{
-		var _t = transform;
+		Transform _t = transform;
 		switch (attackType) {
 			case PlayerAttackType.Shoot:
-				if (!attackLr.enabled)
-					attackLr.enabled = true;
-				attackLr.gameObject.SetActive(true);
-				//attackLookAtPoint.position
-				attackLr.positionCount = 2;
-				attackLr.SetPosition(0, _t.position);
-				if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance)) {
-					attackLr.SetPosition(1, _attackHit.point);
-				} else {
-					attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
-				}
+				//if (!attackLr.enabled)
+				//	attackLr.enabled = true;
+				//attackLr.gameObject.SetActive(true);
+				////attackLookAtPoint.position
+				//attackLr.positionCount = 2;
+				//attackLr.SetPosition(0, _t.position);
+				//if (Physics.Raycast(attackLookAtPoint.position, attackLookAtPoint.forward, out _attackHit, attackTrailDistance)) {
+				//	attackLr.SetPosition(1, _attackHit.point);
+				//} else {
+				//	attackLr.SetPosition(1, attackLookAtPoint.position + attackLookAtPoint.forward*attackTrailDistance);
+				//}
+
+				selectedWeapon.OnAim(attackLr, transform, attackLookAtPoint);
 				break;
 			case PlayerAttackType.Throw:
 				if (throwPoints == 0)

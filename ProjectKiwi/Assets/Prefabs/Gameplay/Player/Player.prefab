@@ -159,27 +159,6 @@ Transform:
   m_Father: {fileID: 2279783332268809113}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1371875003268473520
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1788699274651022051}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bface99eec434b668c4e330706176d65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timeBetweenShots: 0.3
-  bulletBase: {fileID: 0}
-  bulletSpeed: 12
-  bulletSpawnPoint: {fileID: 2962503171676610665}
-  spreadHorizontal: 35
-  spreadVertical: 1
-  spreadType: 1
-  bulletLifeRange: 10
-  numberOfBullets: 12
 --- !u!1 &3996960951102707442
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,13 +294,13 @@ MonoBehaviour:
   life: 100
   playerInput: {fileID: 7682880600382937245}
   movementSpeed: 5
-  selectedWeapon: 0
+  playerWeapon: 0
   attackType: 0
   rawInput: {x: 0, y: 0, z: 0}
   attackLr: {fileID: 577037213}
   attackTrailDistance: 10
   attackLookAtPoint: {fileID: 4440187172291183652}
-  primaryAttack: {fileID: 1788699274651022051}
+  selectedWeapon: {fileID: 58541034}
   throwForce: {x: 5, y: 5}
   throwPoints: 20
   throwSpacingPoint: 0.1
@@ -603,18 +582,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
---- !u!1 &1788699274651022051 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 854379424938841017, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
-  m_PrefabInstance: {fileID: 1371875003258331482}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2093037282136675847 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1009394957134640989, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
   m_PrefabInstance: {fileID: 1371875003258331482}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2962503171676610665 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4185266805980512563, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
+--- !u!114 &58541034 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1371875003268473520, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
   m_PrefabInstance: {fileID: 1371875003258331482}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bface99eec434b668c4e330706176d65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
