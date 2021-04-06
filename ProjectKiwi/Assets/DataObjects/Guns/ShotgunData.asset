@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: ShotgunData
   m_EditorClassIdentifier: 
   type: 1
+  bulletObject: {fileID: 6361849255160304173, guid: 9ed97466f5446b248b2cb1421c289638, type: 3}
   shotForce: {x: 5, y: 0}
   delayBetweenShots: 2
   numberOfBullets: 12
   linePoints: 2
-  bulletSpeed: 15
   spreadHorizontal: 45
   spreadVertical: 0
   spreadType: 1

@@ -45,3 +45,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: 6361849255160304173, guid: 9ed97466f5446b248b2cb1421c289638, type: 3}
   _uiLifebar: {fileID: 8568727921440471991, guid: b2014939371f79c42bfa41dc42cc2188, type: 3}
+  _shotgun: {fileID: 854379424938841017, guid: 2b5150d1d019c0c49945e3fa19bc23a6, type: 3}
+  _grenadeLauncher: {fileID: 854379424938841017, guid: 190357b8493fb5a4098ce4c8de879095, type: 3}
+  _bazooka: {fileID: 854379424938841017, guid: 7b441c1ddd1fc2a45b3324fcb1eec976, type: 3}

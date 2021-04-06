@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterBase : MonoBehaviour, ICharacter
+public class CharacterBase : MonoBehaviour, ICharacter, IHittableObject
 {
     public int life = 100;
     protected int initialLife;
@@ -28,15 +28,6 @@ public class CharacterBase : MonoBehaviour, ICharacter
         
     }
 
-    public virtual void OnHit(int damage)
-    {
-        life -= damage;
-
-        life = Mathf.Clamp(life, 0, initialLife);
-
-        if (life == 0)
-            OnDie();
-    }
 
     public virtual void OnWalk()
     {
@@ -46,5 +37,15 @@ public class CharacterBase : MonoBehaviour, ICharacter
     public void OnReset()
     {
         life = initialLife;
+    }
+
+    public virtual void OnHit(int damage)
+    {
+        life -= damage;
+
+        life = Mathf.Clamp(life, 0, initialLife);
+
+        if (life == 0)
+            OnDie();
     }
 }

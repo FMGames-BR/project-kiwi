@@ -247,7 +247,6 @@ public class PlayerController : CharacterBase, IDamageable
 		selectedWeapon.OnAttack();
 		//reset line renderer
 		attackLr.enabled = false;
-		Debug.Log("reset LR");
 
 		// TODO: Do Shot
 		Debug.Log("Perform Shot with " + actionToPerform.ToString());

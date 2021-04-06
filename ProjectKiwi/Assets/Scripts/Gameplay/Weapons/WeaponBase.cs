@@ -77,7 +77,6 @@ namespace Gameplay.Weapons
                         spreadY + bulletSpawnPoint.eulerAngles.y, 0));
 
                 BulletBase b = SpawnerController.instance.OnSpawnBullet(bulletSpawnPoint.position, rotation);
-                b.speed = data.bulletSpeed;
                 b.lifeRange = data.bulletLifeRange;
             }
         }
