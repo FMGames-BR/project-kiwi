@@ -193,6 +193,18 @@ public class PlayerController : CharacterBase
 		if (playerInput.currentControlScheme == "Keyboard and Mouse") {
 			attackLr.gameObject.SetActive(false);
 		}
+	}
+	
+	
+	/// <summary>
+	/// Keyboard Only - select primary weapon to 2-8 builds (turrets/traps)
+	/// </summary>
+	/// <param name="value">float value positive or negative</param>
+	public void OnSelectPrimaryButtonAction (InputAction.CallbackContext value)
+	{
+		if (value.phase == InputActionPhase.Started) {
+			Debug.Log(value.ReadValue<bool>());
+		}
 
 	}
 }
