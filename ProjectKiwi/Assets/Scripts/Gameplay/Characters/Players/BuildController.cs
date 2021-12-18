@@ -28,6 +28,11 @@ public class BuildController : MonoBehaviour
         _newPos.z = Mathf.RoundToInt(_newPos.z);
 	    placeholder.transform.position = _newPos;
     }
+
+    public void resetObstructions()
+    {
+        _obstructions = new List<GameObject>();
+    }
     
     
    

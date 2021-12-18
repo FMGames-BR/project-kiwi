@@ -17,11 +17,14 @@ public class SpawnerController : MonoBehaviour
     public GameObject _shotgun;
     public GameObject _grenadeLauncher;
     public GameObject _bazooka;
+    
+    [Header("Builds/Turrets")]
+    public GameObject _turret;
 
-    //Containers
-    private GameObject _weaponsContainer, _bulletsContainer, _lifebarContainer;
+    // Containers
+    private GameObject _weaponsContainer, _bulletsContainer, _lifebarContainer, _turretsContainer;
 
-    //PoolingList
+    // PoolingList
     private Dictionary<string, Queue<GameObject>> _poolList = new Dictionary<string, Queue<GameObject>>();
 
     // Start is called before the first frame update
@@ -32,7 +35,6 @@ public class SpawnerController : MonoBehaviour
     public WeaponBase OnSpawnWeapon(Weapon weaponType, Transform weaponParent)
     {
         WeaponBase weaponBase = null;
-
         _weaponsContainer = _weaponsContainer ? _weaponsContainer : new GameObject("WeaponsContainer");
 
         var poolKey = string.Format("weapon {0}", weaponType.ToString());
@@ -127,7 +129,33 @@ public class SpawnerController : MonoBehaviour
         lifebar.OnInit(parent);
         return lifebar;
     }
+    
+    public TurretBase OnSpawnTurret(Vector3 newPos, Quaternion newRotation)
+    {
+        TurretBase _turretBase = null;
+        _turretsContainer = _turretsContainer ? _turretsContainer : new GameObject("TurretsController");
+        var _poolKey = string.Format("turret");
+        GameObject _go = null;
+        if (_poolList.ContainsKey(_poolKey) && _poolList[_poolKey].Count > 0)
+            _go = _poolList[_poolKey].Dequeue();
 
+        if (_go)
+        {
+            _turretBase = _go.GetComponent<TurretBase>();
+            var o = _turretBase.gameObject;
+            o.transform.position = newPos;
+            o.transform.rotation = newRotation;
+        }
+        else
+        {
+            _turretBase = Instantiate(_turret, newPos, newRotation).GetComponent<TurretBase>();
+            _turretBase.transform.SetParent(_turretsContainer.transform);
+        }
+        _turretBase.gameObject.SetActive(true);
+        _turretBase.PoolOnInit();
+        return _turretBase;
+    }
+    
     #region POOLING
     public void OnPoolingWeapons(WeaponBase weapon)
     {
@@ -171,5 +199,19 @@ public class SpawnerController : MonoBehaviour
         _poolList[poolKey].Enqueue(go);
         go.SetActive(false);
     }
+    
+    public void OnPoolingTurrets(GameObject go, TurretBase turretBase)
+    {
+        var poolKey = string.Format("turret");
+        if (!_poolList.ContainsKey(poolKey))
+        {
+            Queue<GameObject> newQueue = new Queue<GameObject>();
+            _poolList.Add(poolKey, newQueue);
+        }
+        _poolList[poolKey].Enqueue(go);
+        turretBase.PoolOnDestroy();
+        go.SetActive(false);
+    }
+    
     #endregion
 }

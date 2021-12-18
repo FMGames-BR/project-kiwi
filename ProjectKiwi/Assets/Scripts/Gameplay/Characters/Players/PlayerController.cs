@@ -42,12 +42,18 @@ public class PlayerController : CharacterBase, IDamageable
 	public int throwPoints;
 	public float throwSpacingPoint;
 
+	private bool _isBuilding;
+	private BuildController _buildController;
+
     protected override void Awake()
     {
         base.Awake();
 
         instance = this;
-
+        
+        _isBuilding = false;
+        _buildController = GetComponent<BuildController>();
+        
         _rb = GetComponent<Rigidbody>();
         _mainCamera = Camera.main;
         _groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -62,7 +68,8 @@ public class PlayerController : CharacterBase, IDamageable
     private void Start()
     {
 		OnSpawnWeapon(currentWeaponType);
-	}
+		OnToggleBuildPlaceholder();
+    }
 
     // Update is called once per frame
     void Update()
@@ -77,7 +84,19 @@ public class PlayerController : CharacterBase, IDamageable
 			SpawnerController.instance.OnPoolingWeapons(selectedWeapon);
 
 		selectedWeapon = SpawnerController.instance.OnSpawnWeapon(weaponType, weaponSpawnPoint);
+	}
 
+	private void OnToggleBuildPlaceholder()
+	{
+		switch (_isBuilding) {
+			case true when !_buildController.placeholder.activeSelf:
+				_buildController.placeholder.SetActive(true);
+				_buildController.resetObstructions();
+				break;
+			case false when _buildController.placeholder.activeSelf:
+				_buildController.placeholder.SetActive(false);
+				break;
+		}
 	}
 
 	protected virtual void OnDoMove()
@@ -175,7 +194,9 @@ public class PlayerController : CharacterBase, IDamageable
 					currentWeaponType = Weapon.Bazooka;
 					break;
 				case '5':
-
+					currentWeaponType = Weapon.None;
+					selectedWeapon = null;
+					_isBuilding = true;
 					break;
 				case '6':
 
@@ -213,7 +234,11 @@ public class PlayerController : CharacterBase, IDamageable
 		}
 		#endregion
 
-		OnSpawnWeapon(currentWeaponType);
+		if (currentWeaponType != Weapon.None) {
+			OnSpawnWeapon(currentWeaponType);
+			_isBuilding = false;
+		}
+		OnToggleBuildPlaceholder();
 	}
 
 	public void OnShot (InputAction.CallbackContext value)
@@ -231,6 +256,8 @@ public class PlayerController : CharacterBase, IDamageable
 
 	protected virtual void OnAiming()
 	{
+		if (!selectedWeapon) return;
+		
 		selectedWeapon.OnCalculateAim(_lookingPosition);
 		selectedWeapon.OnAim(attackLr, transform, attackLookAtPoint);
 	}
